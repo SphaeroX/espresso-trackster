@@ -2,7 +2,7 @@
   <v-container>
     <v-expansion-panels v-model="panel">
 
-      <v-expansion-panel title="Measurement">
+      <v-expansion-panel title="Create Measurement">
         <v-expansion-panel-text>
           <v-sheet width="90%" class="mx-auto">
             <v-form fast-fail @submit.prevent>
@@ -20,7 +20,7 @@
       </v-expansion-panel>
     </v-expansion-panels>
 
-    <v-card flat title="Measurement History" class="mt-5">
+    <v-card flat title="Espressos" class="mt-5">
       <template v-slot:text>
         <v-text-field v-model="espressoDatabaseSearch" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined" hide-details></v-text-field>
       </template>
@@ -85,7 +85,7 @@ export default {
     createEspressoDialog: false,
     shotHistoryDialog: false,
     select_espressoItems: [],
-    input_espressoId: [{ state: 'Select or create new...', abbr: false }],
+    input_espressoId: [{ state: 'Select Espresso...', abbr: false }],
     input_espressoName: null,
     input_espressoManufacturer: null,
     input_espressoArabica: null,
