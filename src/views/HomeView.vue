@@ -115,8 +115,7 @@ export default {
     this.measurementStore = useMeasurementStore();
 
     this.select_espressoItems = this.espressoStore.getAsSelect;
-    this.espressoDatabase = this.espressoStore.getEspressoDatabase;
-    this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
+    this.updateTable();
   },
   methods: {
     saveEspresso() {
@@ -127,6 +126,7 @@ export default {
         robustaPercentage: Number(this.input_espressoRobusta),
       }
       this.espressoStore.createEspresso(espressoData);
+      this.updateTable();
       this.createEspressoDialog = false;
     },
     saveMeasurement() {
@@ -143,6 +143,10 @@ export default {
         this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
         this.panel = [];
       }
+    },
+    updateTable() {
+    this.espressoDatabase = this.espressoStore.getEspressoDatabase;
+    this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
     },
     showHistory(id) {
       this.shotHistoryDialog = true;
