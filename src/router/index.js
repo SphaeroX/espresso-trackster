@@ -7,7 +7,7 @@ const routes = [
     component: () => import("@/layouts/default/Default.vue"),
     children: [
       {
-        path: "",
+        path: "/espresso-trackster/",
         name: "HomeView",
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
