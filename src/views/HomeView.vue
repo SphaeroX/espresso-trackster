@@ -25,7 +25,7 @@
       <template v-slot:text>
         <v-text-field v-model="espressoDatabaseSearch" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined" hide-details></v-text-field>
       </template>
-
+@todo dummy on first place wich contain all shots without filter
       <v-data-table :headers="espressoDatabaseHeaders" :items="espressoDatabase" :search="espressoDatabaseSearch">
         <template v-slot:item.shots="{ item }">
           <v-btn @click="showHistory(item.id)">{{ item.shots }}</v-btn>
@@ -69,7 +69,12 @@
       </v-toolbar>
 
 
-      <v-card-text>a</v-card-text>
+      <v-card-text>
+@todo table with shots
+        @todo remove measurements
+@todo analyse button with diagrams 
+        
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
