@@ -15,6 +15,7 @@ export const useMeasurementStore = defineStore("measurement", {
      * @param {number} measurementObject.grindTime - The grinding time in seconds, as a float number.
      * @param {number} measurementObject.grindAmount - The amount of ground coffee in grams, as a float number.
      * @param {number} measurementObject.extractionAmount - The amount of extracted espresso in milliliters, as a float number.
+     * @param {number} measurementObject.extractionFactor - The factor between grind size and extrusion, as a float number.
      * @param {string} measurementObject.taste - The taste description of the espresso.
      * @param {string} measurementObject.notes - Additional notes or observations about the measurement.
      * @returns {boolean} Returns `true` if the measurement was successfully added, otherwise `false`.
@@ -50,8 +51,8 @@ export const useMeasurementStore = defineStore("measurement", {
       }
     },
     validateMeasurement(measurementObject) {
-      const requiredFields = ["espressoID", "grindSize", "grindTime", "grindAmount", "extractionAmount", "isValid", "notes"];
-      const floatFields = ["grindSize", "grindTime", "grindAmount", "extractionAmount"];
+      const requiredFields = ["espressoID", "grindSize", "grindTime", "grindAmount", "extractionAmount", "extractionFactor", "isValid", "notes"];
+      const floatFields = ["grindSize", "grindTime", "grindAmount", "extractionAmount", "extractionFactor"];
 
       const hasAllFields = requiredFields.every((field) => field in measurementObject);
       if (!hasAllFields) {
@@ -61,7 +62,7 @@ export const useMeasurementStore = defineStore("measurement", {
       const areAllFloats = floatFields.every((field) => typeof measurementObject[field] === "number" && !isNaN(measurementObject[field]));
 
       if (!areAllFloats) {
-        throw new Error("grindSize, grindTime, grindAmount, and extractionAmount must be float numbers.");
+        throw new Error("grindSize, grindTime, grindAmount, extractionAmount, extractionFactor must be float numbers.");
       }
 
       if (typeof measurementObject.isValid !== "boolean") {
