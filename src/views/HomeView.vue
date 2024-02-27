@@ -10,7 +10,8 @@
               <v-text-field v-model="input_grindSize" label="Grind Size" type="number"></v-text-field>
               <v-text-field v-model="input_grindTime" label="Grind Time (s)" type="number"></v-text-field>
               <v-text-field v-model="input_grindAmount" label="Grind Amount (g)" type="number"></v-text-field>
-              <v-text-field v-model="input_extractionAmount" label="Extraction Amount (ml)" type="number"></v-text-field>
+              <v-text-field v-model="input_extractionAmount" label="Extraction Amount (g)" type="number"></v-text-field>
+              <v-text-field v-model="input_extractionFactor" label="Extraction Factor" type="number"></v-text-field>
               <v-textarea v-model="input_notes" clearable label="Notes (optional)"></v-textarea>
               <v-switch color="primary" v-model="input_isValid" label="This shot was tasty!"></v-switch>
               <v-btn type="submit" block class="mt-2" @click="saveMeasurement">Submit</v-btn>
@@ -94,6 +95,7 @@ export default {
     input_grindTime: null,
     input_grindAmount: null,
     input_extractionAmount: null,
+    input_extractionFactor: null,
     input_notes: null,
     input_isValid: false,
     espressoDatabaseSearch: '',
@@ -136,6 +138,7 @@ export default {
         grindTime: parseFloat(this.input_grindTime),
         grindAmount: parseFloat(this.input_grindAmount),
         extractionAmount: parseFloat(this.input_extractionAmount),
+        extractionFactor: parseFloat(this.input_extractionFactor),
         isValid: Boolean(this.input_isValid),
         notes: this.input_notes,
       }
