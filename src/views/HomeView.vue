@@ -140,7 +140,7 @@ export default {
         notes: this.input_notes,
       }
       if (this.measurementStore.createMeasurement(measurementData)) {
-        this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
+        this.updateTable();
         this.panel = [];
       }
     },
