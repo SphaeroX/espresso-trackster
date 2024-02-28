@@ -1,0 +1,50 @@
+{
+    "short_name": "EspressoTrackster",
+    "name": "Espresso Trackster",
+    "description": "Espresso Trackster is your go-to espresso tracker, helping you log and analyze espresso shots and beans. Discover the perfect beans and settings for your taste.",
+    "lang": "en-en",
+    "id": "en.murmli.espresso-trackster",
+    
+    "categories": [
+        "food"
+    ],
+    "icons": [
+      {
+        "src": "logos/logo_48.png",
+        "type": "image/png",
+        "sizes": "48x48"
+      },
+      {
+        "src": "logos/logo_72.png",
+        "type": "image/png",
+        "sizes": "72x72"
+      },
+      {
+        "src": "logos/logo_96.png",
+        "type": "image/png",
+        "sizes": "96x96"
+      },
+      {
+        "src": "logos/logo_144.png",
+        "type": "image/png",
+        "sizes": "144x144"
+      },
+      {
+        "src": "logos/logo_192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "logos/logo_512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ],
+    "start_url": "https://sphaerox.github.io/espresso-trackster/",
+    "background_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "portrait",
+    "scope": "/",
+    "theme_color": "#000000"
+  }
+  
