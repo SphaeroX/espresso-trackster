@@ -23,6 +23,8 @@ export const useMeasurementStore = defineStore("measurement", {
      */
     createMeasurement(measurementObject) {
       try {
+        measurementObject.timestamp = new Date().toISOString();
+        console.log(measurementObject.timestamp);
         this.validateMeasurement(measurementObject);
         this.measurements.push(measurementObject);
         this.updateLocalStorage();
@@ -50,6 +52,11 @@ export const useMeasurementStore = defineStore("measurement", {
         console.error("LocalStorage Update Error:", error);
       }
     },
+    convertDataToTimestamp(isoTimestamp) {
+      const milliseconds = Date.parse(isoTimestamp);
+      const unixTimestamp = milliseconds / 1000;
+      return unixTimestamp;
+    },
     validateMeasurement(measurementObject) {
       const requiredFields = ["espressoID", "grindSize", "grindTime", "grindAmount", "extractionAmount", "extractionFactor", "isValid", "notes"];
       const floatFields = ["grindSize", "grindTime", "grindAmount", "extractionAmount", "extractionFactor"];
@@ -71,7 +78,9 @@ export const useMeasurementStore = defineStore("measurement", {
     },
   },
   getters: {
-    getEspressoMeasurements: (state) => state.measurements,
+    getAllShots: (state) => {
+      return state.measurements.length;
+    },
     getShots: (state) => (espressoArray) => {
       const updatedEspressos = JSON.parse(JSON.stringify(espressoArray));
 
@@ -85,6 +94,16 @@ export const useMeasurementStore = defineStore("measurement", {
       });
 
       return updatedEspressos;
+    },
+    getShotsById: (state) => (id) => {
+      return state.measurements
+        .filter((measurement) => measurement.espressoID === id)
+        .map((shot) => {
+          const date = new Date(shot.timestamp);
+          shot.timestamp = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+          return shot;
+        })
+        .reverse();
     },
   },
 });

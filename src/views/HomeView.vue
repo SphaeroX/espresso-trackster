@@ -25,11 +25,11 @@
       <template v-slot:text>
         <v-text-field v-model="espressoDatabaseSearch" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined" hide-details></v-text-field>
       </template>
-      @todo dummy on first place wich contain all shots without filter
       <v-data-table :headers="espressoDatabaseHeaders" :items="espressoDatabase" :search="espressoDatabaseSearch">
         <template v-slot:item.shots="{ item }">
           <v-btn @click="showHistory(item.id)">{{ item.shots }}</v-btn>
-        </template></v-data-table>
+        </template>
+      </v-data-table>
     </v-card>
   </v-container>
 
@@ -63,14 +63,38 @@
 
     <v-card>
       <v-toolbar>
-        <v-toolbar-title>Shot History </v-toolbar-title>
+        <v-toolbar-title>{{ historyTitle }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-btn icon="mdi-close" @click="shotHistoryDialog = false"></v-btn>
       </v-toolbar>
 
 
       <v-card-text>
+
+        <v-card flat title="History" class="mt-5">
+          <template v-slot:text>
+            <v-text-field v-model="historyDatabaseSearch" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined" hide-details></v-text-field>
+          </template>
+          <v-data-table :headers="historyDatabaseHeaders" :items="historyDatabase" :search="historyDatabaseSearch">
+            <template v-slot:item.id="{ item }">
+              <v-btn color="red" @click="showHistory(item.id)">X</v-btn>
+            </template>
+          </v-data-table>
+        </v-card>
+
+        <v-card flat title="Note Log" class="mt-5">
+          <v-card-text>
+            <v-textarea value="timestamp - note ===="></v-textarea>
+          </v-card-text>
+        </v-card>
+
+        <v-card falt title="Analyse Charts" class="text-center mt-5">
+          <v-btn class="ma-2" color="success">Correlation Matrix</v-btn>
+          <v-btn class="ma-2" color="success">Grindsize vs. Extraction Amount</v-btn>
+          <v-btn class="ma-2" color="success">Grindsize vs. Taste</v-btn>
+        </v-card>
         @todo table with shots
+        @todo "all" id include
         @todo remove measurements
         @todo analyse button with diagrams
 
@@ -116,6 +140,23 @@ export default {
       { key: 'robusta', title: 'Robusta (%)' },
       { key: 'shots', title: 'Shots' },
     ],
+    historyTitle: null,
+    historyDatabaseSearch: '',
+    historyDatabaseHeaders: [
+      {
+        align: 'start',
+        key: 'timestamp',
+        title: 'Time',
+      },
+      { key: 'grindSize', title: 'Grindsize' },
+      { key: 'grindTime', title: 'GTime' },
+      { key: 'grindAmount', title: 'GAmount' },
+      { key: 'extractionAmount', title: 'Extraction' },
+      { key: 'extractionFactor', title: 'Factor' },
+      { key: 'isValid', title: 'Good' },
+      { key: 'id', title: 'Delete' },
+
+    ],
   }),
   mounted() {
     this.espressoStore = useEspressoStore();
@@ -155,6 +196,17 @@ export default {
     updateTable() {
       this.espressoDatabase = this.espressoStore.getEspressoDatabase;
       this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
+
+      const allShotsCount = this.measurementStore.getAllShots;
+
+      this.espressoDatabase.unshift({
+        id: "all",
+        manufacturer: "All Esspreso",
+        name: "Average",
+        arabica: '-',
+        robusta: '-',
+        shots: allShotsCount
+      });
     },
     calculateFactor() {
       const extractionAmountNumeric = parseFloat(this.input_extractionAmount);
@@ -162,8 +214,10 @@ export default {
       this.input_extractionFactor = parseFloat((extractionAmountNumeric / grindAmountNumeric).toFixed(2));
     },
     showHistory(id) {
+      const espresso = this.espressoStore.getEspressoById(id);
       this.shotHistoryDialog = true;
-      console.log(id);
+      this.historyTitle = espresso.name;
+      this.historyDatabase = this.measurementStore.getShotsById(id);
     }
   },
   watch: {
