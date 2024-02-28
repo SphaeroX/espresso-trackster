@@ -24,7 +24,6 @@ export const useMeasurementStore = defineStore("measurement", {
     createMeasurement(measurementObject) {
       try {
         measurementObject.timestamp = new Date().toISOString();
-        console.log(measurementObject.timestamp);
         this.validateMeasurement(measurementObject);
         this.measurements.push(measurementObject);
         this.updateLocalStorage();
@@ -58,8 +57,8 @@ export const useMeasurementStore = defineStore("measurement", {
       return unixTimestamp;
     },
     validateMeasurement(measurementObject) {
-      const requiredFields = ["espressoID", "grindSize", "grindTime", "grindAmount", "extractionAmount", "extractionFactor", "isValid", "notes"];
-      const floatFields = ["grindSize", "grindTime", "grindAmount", "extractionAmount", "extractionFactor"];
+      const requiredFields = ["espressoID", "grindSize", "grindTime", "grindAmount", "extractionTime", "extractionAmount", "extractionFactor", "isValid", "notes"];
+      const floatFields = ["grindSize", "grindTime", "grindAmount", "extractionTime", "extractionAmount", "extractionFactor"];
 
       const hasAllFields = requiredFields.every((field) => field in measurementObject);
       if (!hasAllFields) {
@@ -69,7 +68,7 @@ export const useMeasurementStore = defineStore("measurement", {
       const areAllFloats = floatFields.every((field) => typeof measurementObject[field] === "number" && !isNaN(measurementObject[field]));
 
       if (!areAllFloats) {
-        throw new Error("grindSize, grindTime, grindAmount, extractionAmount, extractionFactor must be float numbers.");
+        throw new Error("grindSize, grindTime, grindAmount, extractionTime, extractionAmount, extractionFactor must be float numbers.");
       }
 
       if (typeof measurementObject.isValid !== "boolean") {
