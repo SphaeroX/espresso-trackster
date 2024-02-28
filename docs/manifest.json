@@ -6,36 +6,36 @@
     "id": "en.murmli.espresso-trackster",
     
     "categories": [
-        "food"
+        "food", "education"
     ],
     "icons": [
       {
-        "src": "logos/logo_48.png",
+        "src": "logos/logo_32.png",
         "type": "image/png",
-        "sizes": "48x48"
+        "sizes": "32x32"
       },
       {
-        "src": "logos/logo_72.png",
+        "src": "logos/logo_64.png",
         "type": "image/png",
-        "sizes": "72x72"
+        "sizes": "64x64"
       },
       {
-        "src": "logos/logo_96.png",
+        "src": "logos/logo_128.png",
         "type": "image/png",
-        "sizes": "96x96"
+        "sizes": "128x128"
       },
       {
-        "src": "logos/logo_144.png",
-        "type": "image/png",
-        "sizes": "144x144"
-      },
-      {
-        "src": "logos/logo_192.png",
+        "src": "logos/logo_256.png",
         "type": "image/png",
         "sizes": "192x192"
       },
       {
         "src": "logos/logo_512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      },
+      {
+        "src": "logos/logo_1024.png",
         "type": "image/png",
         "sizes": "512x512"
       }
