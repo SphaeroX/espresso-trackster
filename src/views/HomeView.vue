@@ -60,7 +60,6 @@
 
   <!-- Show ShotHistory Dialog -->
   <v-dialog v-model="shotHistoryDialog" transition="dialog-bottom-transition" fullscreen>
-
     <v-card>
       <v-toolbar>
         <v-toolbar-title>{{ historyTitle }}</v-toolbar-title>
@@ -68,9 +67,7 @@
         <v-btn icon="mdi-close" @click="shotHistoryDialog = false"></v-btn>
       </v-toolbar>
 
-
       <v-card-text>
-
         <v-card flat title="History" class="mt-5">
           <template v-slot:text>
             <v-text-field v-model="historyDatabaseSearch" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined" hide-details></v-text-field>
@@ -89,15 +86,29 @@
         </v-card>
 
         <v-card falt title="Analyse Charts" class="text-center mt-5">
-          <v-btn class="ma-2" color="success">Correlation Matrix</v-btn>
-          <v-btn class="ma-2" color="success">Grindsize vs. Extraction Amount</v-btn>
-          <v-btn class="ma-2" color="success">Grindsize vs. Taste</v-btn>
+          <v-btn class="ma-2" color="success" @click="diagramDialog = true">Correlation Matrix</v-btn>
+          <v-btn class="ma-2" color="success" @click="diagramDialog = true">Grindsize vs. Extraction Amount</v-btn>
+          <v-btn class="ma-2" color="success" @click="diagramDialog = true">Grindsize vs. Taste</v-btn>
         </v-card>
         @todo table with shots
         @todo "all" id include
         @todo remove measurements
         @todo analyse button with diagrams
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 
+  <!-- Show Diagram Dialog -->
+  <v-dialog v-model="diagramDialog" transition="dialog-bottom-transition" fullscreen>
+    <v-card>
+      <v-toolbar>
+        <v-toolbar-title>{{ historyTitle }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn icon="mdi-close" @click="diagramDialog = false"></v-btn>
+      </v-toolbar>
+
+      <v-card-text>
+        Diagram
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -157,6 +168,7 @@ export default {
       { key: 'id', title: 'Delete' },
 
     ],
+    diagramDialog: false,
   }),
   mounted() {
     this.espressoStore = useEspressoStore();
