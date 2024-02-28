@@ -95,9 +95,8 @@
           <v-btn class="ma-2" color="success" @click="diagramDialog = true">Grindsize vs. Taste</v-btn>
           <v-btn class="ma-2" color="success" @click="diagramDialog = true">and more with brewtime...</v-btn>
         </v-card>
-        @todo table with shots
+        @todo delete
         @todo "all" id include
-        @todo remove measurements
         @todo analyse button with diagrams
       </v-card-text>
     </v-card>
