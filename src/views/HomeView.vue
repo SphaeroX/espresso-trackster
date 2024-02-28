@@ -25,7 +25,7 @@
       <template v-slot:text>
         <v-text-field v-model="espressoDatabaseSearch" label="Search" prepend-inner-icon="mdi-magnify" single-line variant="outlined" hide-details></v-text-field>
       </template>
-@todo dummy on first place wich contain all shots without filter
+      @todo dummy on first place wich contain all shots without filter
       <v-data-table :headers="espressoDatabaseHeaders" :items="espressoDatabase" :search="espressoDatabaseSearch">
         <template v-slot:item.shots="{ item }">
           <v-btn @click="showHistory(item.id)">{{ item.shots }}</v-btn>
@@ -70,10 +70,10 @@
 
 
       <v-card-text>
-@todo table with shots
+        @todo table with shots
         @todo remove measurements
-@todo analyse button with diagrams 
-        
+        @todo analyse button with diagrams
+
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -153,8 +153,13 @@ export default {
       }
     },
     updateTable() {
-    this.espressoDatabase = this.espressoStore.getEspressoDatabase;
-    this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
+      this.espressoDatabase = this.espressoStore.getEspressoDatabase;
+      this.espressoDatabase = this.measurementStore.getShots(this.espressoDatabase);
+    },
+    calculateFactor() {
+      const extractionAmountNumeric = parseFloat(this.input_extractionAmount);
+      const grindAmountNumeric = parseFloat(this.input_grindAmount);
+      this.input_extractionFactor = parseFloat((extractionAmountNumeric / grindAmountNumeric).toFixed(2));
     },
     showHistory(id) {
       this.shotHistoryDialog = true;
@@ -165,9 +170,25 @@ export default {
     'input_espressoId.abbr': function (newValue) {
       if (newValue === 'new') {
         this.createEspressoDialog = true;
-        this.input_espressoId = [{ state: 'Select or create new...', abbr: false }];
+        this.input_espressoId = [{ state: 'Select Espresso...', abbr: false }];
       }
-    }
+    },
+    input_extractionAmount(newValue) {
+      const isNewValueNumeric = !isNaN(parseFloat(newValue));
+      const isGrindAmountNumeric = !isNaN(parseFloat(this.input_grindAmount));
+
+      if (isNewValueNumeric && isGrindAmountNumeric) {
+        this.calculateFactor();
+      }
+    },
+    input_grindAmount(newValue) {
+      const isNewValueNumeric = !isNaN(parseFloat(newValue));
+      const isExtractionAmountNumeric = !isNaN(parseFloat(this.input_extractionAmount));
+
+      if (isNewValueNumeric && isExtractionAmountNumeric) {
+        this.calculateFactor();
+      }
+    },
   }
 }
 </script>
