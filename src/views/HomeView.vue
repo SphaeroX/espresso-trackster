@@ -1,5 +1,7 @@
 <template>
   <v-container>
+    @todo save in localstorage last brewtime, Grind Size and Grind Time
+    @todo when click in those fields select all instant
     <v-expansion-panels v-model="panel">
 
       <v-expansion-panel title="Create Measurement">
