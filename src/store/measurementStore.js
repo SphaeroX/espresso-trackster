@@ -23,6 +23,7 @@ export const useMeasurementStore = defineStore("measurement", {
      */
     createMeasurement(measurementObject) {
       try {
+        measurementObject.id = Date.now() + Math.random().toString(16).slice(2);
         measurementObject.timestamp = new Date().toISOString();
         this.validateMeasurement(measurementObject);
         this.measurements.push(measurementObject);
