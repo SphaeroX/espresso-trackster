@@ -78,7 +78,7 @@
           </template>
           <v-data-table :headers="historyDatabaseHeaders" :items="historyDatabase" :search="historyDatabaseSearch">
             <template v-slot:item.id="{ item }">
-              <v-btn color="red" @click="showHistory(item.id)">X</v-btn>
+              <v-btn color="red" @click="removeMeasurement(item.id)">X</v-btn>
             </template>
           </v-data-table>
         </v-card>
@@ -97,7 +97,6 @@
           <v-btn class="ma-2" color="success" @click="diagramDialog = true">Grindsize vs. Taste</v-btn>
           <v-btn class="ma-2" color="success" @click="diagramDialog = true">and more with brewtime...</v-btn>
         </v-card>
-        @todo delete
         @todo "all" id include
         @todo analyse button with diagrams
       </v-card-text>
@@ -159,6 +158,7 @@ export default {
       { key: 'shots', title: 'Shots' },
     ],
     historyTitle: null,
+    historyId: null,
     historyDatabaseSearch: '',
     historyDatabaseHeaders: [
       {
@@ -176,6 +176,7 @@ export default {
       { key: 'id', title: 'Delete' },
 
     ],
+    historyDatabase: [],
     diagramDialog: false,
   }),
   mounted() {
@@ -238,7 +239,12 @@ export default {
       const espresso = this.espressoStore.getEspressoById(id);
       this.shotHistoryDialog = true;
       this.historyTitle = espresso.name;
+      this.historyId = espresso.id;
       this.historyDatabase = this.measurementStore.getShotsById(id);
+    },
+    removeMeasurement(id) {
+      this.measurementStore.removeMeasurement(id);
+      this.historyDatabase = this.measurementStore.getShotsById(this.historyId);
     }
   },
   watch: {

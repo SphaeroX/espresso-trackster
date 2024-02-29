@@ -34,9 +34,9 @@ export const useMeasurementStore = defineStore("measurement", {
         return false;
       }
     },
-    removeMeasurement(espressoID) {
+    removeMeasurement(id) {
       const initialLength = this.measurements.length;
-      this.measurements = this.measurements.filter((measurement) => measurement.espressoID !== espressoID);
+      this.measurements = this.measurements.filter((measurement) => measurement.id !== id);
       const finalLength = this.measurements.length;
       if (initialLength !== finalLength) {
         this.updateLocalStorage();
