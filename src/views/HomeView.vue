@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    @todo save in localstorage last brewtime, Grind Size and Grind Time
     @todo when click in those fields select all instant
     <v-expansion-panels v-model="panel">
 
@@ -122,6 +121,7 @@
 <script setup>
 import { useEspressoStore } from '@/store/espressoStore.js';
 import { useMeasurementStore } from '@/store/measurementStore.js';
+import { useSettingStore } from '@/store/settingStore.js';
 </script>
 
 <script>
@@ -182,6 +182,11 @@ export default {
   mounted() {
     this.espressoStore = useEspressoStore();
     this.measurementStore = useMeasurementStore();
+    this.settingStore = useSettingStore();
+
+    this.input_grindSize = this.settingStore.grindSize;
+    this.input_grindTime = this.settingStore.grindTime;
+    this.input_extractionTime = this.settingStore.extractionTime;
 
     this.select_espressoItems = this.espressoStore.getAsSelect;
     this.updateTable();
@@ -214,6 +219,13 @@ export default {
         this.updateTable();
         this.panel = [];
       }
+
+      this.settingStore.updateSettings({
+        espressoID: this.input_espressoId.abbr,
+        extractionTime: this.input_extractionTime,
+        grindSize: this.input_grindSize,
+        grindTime: this.input_grindTime
+      });
     },
     updateTable() {
       this.espressoDatabase = this.espressoStore.getEspressoDatabase;
