@@ -1,7 +1,13 @@
 // Composables
 import { createRouter, createWebHistory } from "vue-router";
+import PrivacyPolicy from "../views/PrivacyView.vue";
 
 const routes = [
+  {
+    path: "/espresso-trackster/privacy/",
+    name: "PrivacyPolicy",
+    component: PrivacyPolicy,
+  },
   {
     path: "/",
     component: () => import("@/layouts/default/Default.vue"),
