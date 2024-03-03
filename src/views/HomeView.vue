@@ -99,8 +99,6 @@
           <v-btn class="ma-2" color="success" @click="showDiagramm('grindSize-extractionTime-isValid')">Grind Size vs. Extraction Time</v-btn>
           <v-btn class="ma-2" color="success" @click="showDiagramm('grindAmount-grindSize-isValid')">Grind Amount vs. Grind Size</v-btn>
         </v-card>
-        @todo "all" id include
-        @todo analyse button with diagrams
       </v-card-text>
     </v-card>
   </v-dialog>

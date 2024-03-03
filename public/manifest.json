@@ -40,6 +40,49 @@
         "sizes": "512x512"
       }
     ],
+    "screenshots": [
+      {
+        "src": "/screenshots/et_screenshot_overview.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      },
+      
+      {
+        "src": "/screenshots/et_screenshot_create.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      },
+      
+      {
+        "src": "/screenshots/et_screenshot_history.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      },
+      
+      {
+        "src": "/screenshots/et_screenshot_notes.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      },
+      
+      {
+        "src": "/screenshots/et_screenshot_diagram.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      },
+      
+      {
+        "src": "/screenshots/et_screenshot_corellation.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      },
+      
+      {
+        "src": "/screenshots/et_screenshot_filter.png",
+        "sizes": "828x1792",
+        "type": "image/png"
+      }
+    ],
     "start_url": "https://sphaerox.github.io/espresso-trackster/",
     "background_color": "#ffffff",
     "display": "standalone",
