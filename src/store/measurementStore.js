@@ -42,6 +42,15 @@ export const useMeasurementStore = defineStore("measurement", {
         this.updateLocalStorage();
       }
     },
+    deleteAllByEspresso(espressoID) {
+      const initialLength = this.measurements.length;
+      this.measurements = this.measurements.filter((measurement) => measurement.espressoID !== espressoID);
+      const finalLength = this.measurements.length;
+
+      if (initialLength !== finalLength) {
+        this.updateLocalStorage();
+      }
+    },
     getMeasurementsByEspressoID(espressoID) {
       return this.measurements.filter((measurement) => measurement.espressoID === espressoID);
     },

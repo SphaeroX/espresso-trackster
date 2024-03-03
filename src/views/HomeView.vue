@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    @todo when click in those fields select all instant
     <v-expansion-panels v-model="panel">
 
       <v-expansion-panel title="Create Measurement">
@@ -8,12 +7,12 @@
           <v-sheet width="90%" class="mx-auto">
             <v-form fast-fail @submit.prevent>
               <v-select v-model="input_espressoId" :items="select_espressoItems" item-title="state" item-value="abbr" persistent-hint return-object single-line variant="underlined"></v-select>
-              <v-text-field v-model="input_grindSize" label="Grind Size" type="number"></v-text-field>
-              <v-text-field v-model="input_grindTime" label="Grind Time (s)" type="number"></v-text-field>
-              <v-text-field v-model="input_grindAmount" label="Grind Amount (g)" type="number"></v-text-field>
-              <v-text-field v-model="input_extractionTime" label="Brewtime (s)" type="number"></v-text-field>
-              <v-text-field v-model="input_extractionAmount" label="Extraction Amount (g)" type="number"></v-text-field>
-              <v-text-field v-model="input_extractionFactor" label="Extraction Factor" type="number"></v-text-field>
+              <v-text-field v-model="input_grindSize" label="Grind Size" type="number" @focus="selectAll"></v-text-field>
+              <v-text-field v-model="input_grindTime" label="Grind Time (s)" type="number" @focus="selectAll"></v-text-field>
+              <v-text-field v-model="input_grindAmount" label="Grind Amount (g)" type="number" @focus="selectAll"></v-text-field>
+              <v-text-field v-model="input_extractionTime" label="Brewtime (s)" type="number" @focus="selectAll"></v-text-field>
+              <v-text-field v-model="input_extractionAmount" label="Extraction Amount (g)" type="number" @focus="selectAll"></v-text-field>
+              <v-text-field v-model="input_extractionFactor" label="Extraction Factor" type="number" @focus="selectAll"></v-text-field>
               <v-textarea v-model="input_notes" clearable label="Notes (optional)"></v-textarea>
               <v-switch color="primary" v-model="input_isValid" label="This shot was tasty!"></v-switch>
               <v-btn type="submit" block class="mt-2" @click="saveMeasurement">Submit</v-btn>
@@ -31,6 +30,7 @@
 
         <template v-slot:item.shots="{ item }">
           <v-btn @click="showHistory(item.id)">{{ item.shots }}</v-btn>
+          <v-btn color="red" @click="showDeleteEspressoDialog(item.id)">X</v-btn>
         </template>
       </v-data-table>
     </v-card>
@@ -143,6 +143,27 @@
       </v-card-text>
     </v-card>
   </v-dialog>
+
+  <!-- Delete All by Espresso Dialog -->
+  <v-dialog v-model="deleteEspressoDialog" width="90%">
+    <v-card max-width="90%" class="pb-5">
+      <v-card-title class="d-flex justify-space-between align-center">
+        Attension!
+        <v-btn icon="mdi-close" variant="text" @click="createEspressoDialog = false"></v-btn>
+      </v-card-title>
+      <v-card-text>
+        Attention, this action cannot be undone. Are you sure you want to delete all measurements associated with this Espresso?
+      </v-card-text>
+      <v-card-actions>
+
+        <v-btn @click="deleteAllByEspresso" class="mx-5">Delete</v-btn>
+        <v-spacer></v-spacer>
+        <v-btn color="green" @click="deleteEspressoDialog = false" variant="tonal" class="mx-5">No No No</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+
+
 </template>
 
 <script setup>
@@ -214,7 +235,9 @@ export default {
     espressoData: [],
     correlationMatrix: [],
     matrixLabels: ['GrindSize', 'GrindTime', 'GrindAmount', 'ExtractionTime', 'ExtractionAmount', 'ExtractionFactor'],
-    showCorrelationMatrix: false
+    showCorrelationMatrix: false,
+    deleteEspressoDialog: false,
+    deleteId: null,
   }),
   mounted() {
     this.espressoStore = useEspressoStore();
@@ -229,6 +252,9 @@ export default {
     this.updateTable();
   },
   methods: {
+    selectAll(event) {
+      event.target.select();
+    },
     saveEspresso() {
       const espressoData = {
         name: this.input_espressoName,
@@ -239,7 +265,20 @@ export default {
       this.espressoStore.createEspresso(espressoData);
       this.select_espressoItems = this.espressoStore.getAsSelect;
       this.updateTable();
+      const lastEspressoItem = this.select_espressoItems[this.select_espressoItems.length - 1];
+      this.input_espressoId = lastEspressoItem;
       this.createEspressoDialog = false;
+    },
+    showDeleteEspressoDialog(id) {
+      this.deleteId = id;
+      this.deleteEspressoDialog = true;
+    },
+    deleteAllByEspresso() {
+      this.measurementStore.deleteAllByEspresso(this.deleteId);
+      this.espressoStore.removeEspresso(this.deleteId);
+      this.deleteId = null;
+      this.updateTable();
+      this.deleteEspressoDialog = false;
     },
     saveMeasurement() {
       if (this.input_espressoId.abbr == "new" || this.input_espressoId.abbr == undefined) {
@@ -301,21 +340,18 @@ export default {
     },
     showHistory(id) {
       if (id == "all") {
-        this.shotHistoryDialog = true;
         this.historyTitle = "All Shots";
         this.historyEspressoId = false;
         this.historyDatabase = this.measurementStore.getAllShots;
         this.noteLog = this.measurementStore.noteLog();
-        return;
       } else {
         const espresso = this.espressoStore.getEspressoById(id);
-        this.shotHistoryDialog = true;
         this.historyTitle = espresso.name;
         this.historyEspressoId = espresso.id;
         this.historyDatabase = this.measurementStore.getShotsById(id);
         this.noteLog = this.measurementStore.noteLog(id);
       }
-
+      this.shotHistoryDialog = true;
     },
     removeMeasurement(id) {
       this.measurementStore.removeMeasurement(id);
