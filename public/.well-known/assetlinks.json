@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "en.murmli.espressotrackster",
+        "sha256_cert_fingerprints": ["79:EB:40:10:08:C1:A3:F5:8C:BC:25:DE:17:A8:35:E9:47:DC:C8:FC:7D:EA:3E:13:F4:CA:4F:EC:74:8F:D7:DF"]
+      }
+    }]
