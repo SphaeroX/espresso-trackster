@@ -113,32 +113,30 @@
         <v-spacer></v-spacer>
         <v-btn icon="mdi-close" @click="diagramDialog = false"></v-btn>
       </v-toolbar>
-
       <v-card-text>
         <v-container>
           <v-row>
             <canvas ref="canvas"></canvas>
           </v-row>
+        </v-container>
+        <v-container v-if="showCorrelationMatrix">
+          <v-data-table dense>
 
-          <v-container v-if="showCorrelationMatrix">
-            <v-simple-table dense>
-
-              <template v-slot:default>
-                <thead>
-                  <tr>
-                    <th class="text-left">Variable</th>
-                    <th v-for="(item, index) in matrixLabels" :key="index" class="text-left">{{ item }}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(row, rowIndex) in correlationMatrix" :key="rowIndex">
-                    <td>{{ matrixLabels[rowIndex] }}</td>
-                    <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
-                  </tr>
-                </tbody>
-              </template>
-            </v-simple-table>
-          </v-container>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Variable</th>
+                  <th v-for="(item, index) in matrixLabels" :key="index" class="text-left">{{ item }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(row, rowIndex) in correlationMatrix" :key="rowIndex">
+                  <td>{{ matrixLabels[rowIndex] }}</td>
+                  <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
+                </tr>
+              </tbody>
+            </template>
+          </v-data-table>
         </v-container>
       </v-card-text>
     </v-card>
@@ -455,10 +453,8 @@ export default {
                       label += ': ';
                     }
 
-                    // Grundlegende Informationen
                     label += `X: ${context.parsed.x}, Y: ${context.parsed.y}`;
 
-                    // Erweiterte Informationen basierend auf dem Plot-Typ
                     switch (plotType) {
                       case 'grindSize-grindTime-isValid':
                         label += `\nGrind Size: ${shot.x} `;
@@ -478,15 +474,12 @@ export default {
                         break;
                     }
 
-                    // Status des Espresso Shots hinzufügen
                     label += `\nShot Status: ${shot.isValid ? 'Good' : 'Bad'}`;
 
-                    // Extraktionszeit hinzufügen, wenn sie nicht bereits enthalten ist
                     if (!label.includes('Extraction Time')) {
                       label += `\nExtraction Time: ${shot.extractionTime}`;
                     }
 
-                    // Weitere relevante Informationen können hier hinzugefügt werden, wie z.B. Notizen, falls vorhanden
                     if (shot.notes) {
                       label += `\nNotes: ${shot.notes}`;
                     }
