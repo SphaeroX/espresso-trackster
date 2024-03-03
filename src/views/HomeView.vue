@@ -133,7 +133,7 @@
                 <tbody>
                   <tr v-for="(row, rowIndex) in correlationMatrix" :key="rowIndex">
                     <td>{{ matrixLabels[rowIndex] }}</td>
-                    <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell.toFixed(2) }}</td>
+                    <td v-for="(cell, cellIndex) in row" :key="cellIndex">{{ cell }}</td>
                   </tr>
                 </tbody>
               </template>
@@ -149,8 +149,6 @@
 import { useEspressoStore } from '@/store/espressoStore.js';
 import { useMeasurementStore } from '@/store/measurementStore.js';
 import { useSettingStore } from '@/store/settingStore.js';
-
-
 </script>
 
 <script>
@@ -207,13 +205,11 @@ export default {
       { key: 'extractionFactor', title: 'Factor' },
       { key: 'isValid', title: 'Good' },
       { key: 'id', title: 'Delete' },
-
     ],
     historyDatabase: [],
     diagramDialog: false,
     noteLog: null,
     myChart: null,
-
     shots: [],
     espressoData: [],
     correlationMatrix: [],
@@ -221,8 +217,6 @@ export default {
     showCorrelationMatrix: false
   }),
   mounted() {
-
-
     this.espressoStore = useEspressoStore();
     this.measurementStore = useMeasurementStore();
     this.settingStore = useSettingStore();
@@ -243,6 +237,7 @@ export default {
         robustaPercentage: Number(this.input_espressoRobusta),
       }
       this.espressoStore.createEspresso(espressoData);
+      this.select_espressoItems = this.espressoStore.getAsSelect;
       this.updateTable();
       this.createEspressoDialog = false;
     },
@@ -481,21 +476,28 @@ export default {
       this.showCorrelationMatrix = false;
       this.diagramDialog = true;
       this.renderChart(type);
-
     },
     calculatePearsonCorrelation(x, y) {
-      let sumX = 0, sumY = 0, sumXY = 0, sumX2 = 0, sumY2 = 0;
+      if (x.length !== y.length || x.length === 0) return null;
+      let sumX = 0, sumY = 0, sumXY = 0;
+      let squareSumX = 0, squareSumY = 0;
       const n = x.length;
+
       for (let i = 0; i < n; i++) {
+        if (typeof x[i] !== 'number' || typeof y[i] !== 'number') return null;
         sumX += x[i];
         sumY += y[i];
         sumXY += (x[i] * y[i]);
-        sumX2 += (x[i] * x[i]);
-        sumY2 += (y[i] * y[i]);
+        squareSumX += (x[i] * x[i]);
+        squareSumY += (y[i] * y[i]);
       }
-      const numerator = sumXY - (sumX * sumY / n);
-      const denominator = Math.sqrt((sumX2 - sumX * sumX / n) * (sumY2 - sumY * sumY / n));
-      return numerator / denominator;
+
+      const numerator = n * sumXY - sumX * sumY;
+      const denominator = Math.sqrt((n * squareSumX - sumX * sumX) * (n * squareSumY - sumY * sumY));
+
+      if (denominator === 0) return 0;
+      const correlation = numerator / denominator;
+      return isFinite(correlation) ? parseFloat(correlation.toFixed(2)) : null;
     },
     createCorrelationMatrix(data) {
       const matrix = [];
@@ -526,10 +528,9 @@ export default {
         shot.extractionFactor,
       ]);
 
-      this.correlationMatrix = this.createCorrelationMatrix(data);
-      console.log(this.correlationMatrix);
+      const limitedArray = this.createCorrelationMatrix(data).slice(0, 6).map(entry => entry.slice(0, 6));
+      this.correlationMatrix = limitedArray;
     },
-
   },
   watch: {
     'input_espressoId.abbr': function (newValue) {
