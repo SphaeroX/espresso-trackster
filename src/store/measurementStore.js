@@ -78,7 +78,7 @@ export const useMeasurementStore = defineStore("measurement", {
     },
   },
   getters: {
-    getAllShots: (state) => {
+    getAllShotsLength: (state) => {
       return state.measurements.length;
     },
     getShots: (state) => (espressoArray) => {
@@ -105,5 +105,33 @@ export const useMeasurementStore = defineStore("measurement", {
         })
         .reverse();
     },
+    getAllShots: (state) => {
+      return state.measurements
+        .map((shot) => {
+          const date = new Date(shot.timestamp);
+          shot.timestamp = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+          return shot;
+        })
+        .reverse();
+    },
+    noteLog:
+      (state) =>
+      (id = false) => {
+        const filteredMeasurements = id ? state.measurements.filter((m) => m.espressoID === id) : state.measurements;
+
+        const logString = filteredMeasurements.reduce((acc, m) => {
+          if (m.notes === null || m.notes.trim() === "") return acc;
+
+          const date = new Date();
+          const dateString = `${date.getDate().toString().padStart(2, "0")}/${(date.getMonth() + 1).toString().padStart(2, "0")}/${date.getFullYear()}`;
+          const grindDetails = `${m.grindSize}/${m.grindTime}/${m.grindAmount}/${m.extractionAmount}`;
+          const note = m.notes;
+          const measurementString = `${dateString}\n${grindDetails}\n${note}\n===========================`;
+
+          return `${acc}${measurementString}\n`;
+        }, "");
+
+        return `Grindsize/Grindtime/In/Out\n===========================\n${logString.trim()}`;
+      },
   },
 });
