@@ -38,6 +38,7 @@ export const useEspressoStore = defineStore("espresso", {
     },
     modifyEspresso(id, updatedEspresso) {
       const index = this.espressos.findIndex((espresso) => espresso.id === id);
+
       if (index !== -1) {
         this.espressos[index] = {
           ...this.espressos[index],

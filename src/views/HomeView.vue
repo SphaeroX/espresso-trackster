@@ -61,7 +61,7 @@
     </v-card>
   </v-dialog>
 
-  <!-- Show ShotHistory Dialog -->
+  <!-- Show ShotHistory Dialogg -->
   <v-dialog v-model="shotHistoryDialog" transition="dialog-bottom-transition" fullscreen>
     <v-card>
       <v-toolbar>
@@ -98,6 +98,7 @@
           <v-btn class="ma-2" color="success" @click="showDiagramm('grindAmount-extractionTime-isValid')">Grind Amount vs. Extraction Time</v-btn>
           <v-btn class="ma-2" color="success" @click="showDiagramm('grindSize-extractionTime-isValid')">Grind Size vs. Extraction Time</v-btn>
           <v-btn class="ma-2" color="success" @click="showDiagramm('grindAmount-grindSize-isValid')">Grind Amount vs. Grind Size</v-btn>
+
         </v-card>
       </v-card-text>
     </v-card>
